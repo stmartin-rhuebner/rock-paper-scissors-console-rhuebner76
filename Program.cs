@@ -2,7 +2,8 @@
 
 public class Program
 {
-    enum Move {
+    enum Move
+    {
         Invalid = -1,
         Rock,
         Paper,
@@ -13,7 +14,8 @@ public class Program
     const int MinMove = (int)Move.Rock;
     const int MaxMove = (int)Move.Scissor + 1;
 
-    enum Outcome {
+    enum Outcome
+    {
         Draw = 0,
         UserWin = -1,
         ComputerWin = 1
@@ -29,11 +31,15 @@ public class Program
 
         do
         {
-            Console.Clear();
+            // it is not possible to clear a console that has been redirected!
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
 
             Move userMove;
-            
-            do 
+
+            do
             {
                 Console.WriteLine("Choose [r]ock, [p]aper, [s]cissors, or [q]uit:");
                 string input = Console.ReadLine().ToLower();
@@ -94,9 +100,9 @@ public class Program
                 else if (computerMove == Move.Paper)
                 {
                     outcome = Outcome.Draw;
-                } 
+                }
             }
-            else if (userMove == Move.Scissor )
+            else if (userMove == Move.Scissor)
             {
                 if (computerMove == Move.Rock)
                 {
@@ -114,31 +120,31 @@ public class Program
 
             switch (userMove)
             {
-                case Move.Rock: 
+                case Move.Rock:
                     Console.Write("You choose rock");
                     break;
-                case Move.Paper: 
+                case Move.Paper:
                     Console.Write("You choose paper");
                     break;
-                case Move.Scissor: 
+                case Move.Scissor:
                     Console.Write("You choose scissors");
                     break;
             }
 
-            
+
             switch (computerMove)
             {
-                case Move.Rock: 
+                case Move.Rock:
                     Console.WriteLine(" and Computer choose rock");
                     break;
-                case Move.Paper: 
+                case Move.Paper:
                     Console.WriteLine(" and Computer choose paper");
                     break;
-                case Move.Scissor: 
+                case Move.Scissor:
                     Console.WriteLine(" and Computer choose scissors");
                     break;
             }
-            
+
             switch (outcome)
             {
                 case Outcome.Draw: // draw
@@ -159,6 +165,8 @@ public class Program
             }
 
             Console.WriteLine("Score: {0} wins, {1} losses, {2} draws", wins, losses, draws);
+            Console.WriteLine("Press [enter] to continue");
+            Console.ReadLine();
         }
         while (true);
     }
