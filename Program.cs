@@ -2,18 +2,36 @@
 
 public class Program
 {
+    enum Move {
+        Invalid = -1,
+        Rock,
+        Paper,
+        Scissor,
+        Quit
+    }
+
+    const int MinMove = (int)Move.Rock;
+    const int MaxMove = (int)Move.Scissor + 1;
+
+    enum Outcome {
+        Draw = 0,
+        UserWin = -1,
+        ComputerWin = 1
+    }
+
     public static void Main()
     {
         int seed = (int)DateTime.Now.Ticks;
-        Random random = new Random();
+        Random random = new Random(seed);
         int draws = 0;
         int wins = 0;
         int losses = 0;
 
         do
         {
-            // get user option
-            int userMove;
+            Console.Clear();
+
+            Move userMove;
             
             do 
             {
@@ -22,87 +40,87 @@ public class Program
 
                 if (input == "r" || input == "rock")
                 {
-                    userMove = 0; // rock
+                    userMove = Move.Rock;
                 }
                 else if (input == "p" || input == "paper")
                 {
-                    userMove = 1; // paper
+                    userMove = Move.Paper;
                 }
                 else if (input == "s" || input == "scissor")
                 {
-                    userMove = 2;   // scissors
+                    userMove = Move.Scissor;
                 }
                 else if (input == "q" || input == "quit")
                 {
-                    userMove = 3;   // quit
+                    userMove = Move.Quit;
                 }
                 else
                 {
                     Console.WriteLine("Invalid entry");
-                    userMove = -1;  // invalid
+                    userMove = Move.Invalid;  // invalid
                 }
-            } while (userMove == -1);
+            } while (userMove == Move.Invalid);
 
-            if (userMove == 3) return;
+            if (userMove == Move.Quit) return;
 
-            int computerMove = random.Next(0, 3); // random number of [0,1,2]
+            Move computerMove = (Move)random.Next(MinMove, MaxMove);
 
-            int result = 0; // draw
-            if (userMove == 0 /* rock */ )
+            Outcome outcome = Outcome.Draw;
+            if (userMove == Move.Rock)
             {
-                if (computerMove == 1 /* paper */)
+                if (computerMove == Move.Paper)
                 {
-                    result = 1;  // computer win
+                    outcome = Outcome.ComputerWin;
                 }
-                else if (computerMove == 2 /* scissors */)
+                else if (computerMove == Move.Scissor)
                 {
-                    result = -1; // user win
+                    outcome = Outcome.UserWin;
                 }
-                else /* rock */
+                else if (computerMove == Move.Rock)
                 {
-                    result = 0; // draw
+                    outcome = Outcome.Draw;
                 }
             }
-            else if (userMove == 1 /* paper */ )
+            else if (userMove == Move.Paper)
             {
-                if (computerMove == 2 /* scissors */)
+                if (computerMove == Move.Scissor)
                 {
-                    result = 1; // computer win
+                    outcome = Outcome.ComputerWin;
                 }
-                else if (computerMove == 0 /* rock */)
+                else if (computerMove == Move.Rock)
                 {
-                    result = -1; // user win
+                    outcome = Outcome.UserWin;
                 }
-                else /* paper */
+                else if (computerMove == Move.Paper)
                 {
-                    result = 0;
-                }
+                    outcome = Outcome.Draw;
+                } 
             }
-            else if (userMove == 2 /* scissor */ )
+            else if (userMove == Move.Scissor )
             {
-                if (computerMove == 0 /* rock */)
+                if (computerMove == Move.Rock)
                 {
-                    result = 1; // computer win
+                    outcome = Outcome.ComputerWin;
                 }
-                else if (computerMove == 1 /* paper */)
+                else if (computerMove == Move.Paper)
                 {
-                    result = -1; // user win
+                    outcome = Outcome.UserWin;
                 }
-                else /* paper */
+                else if (computerMove == Move.Scissor)
                 {
-                    result = 0;
+                    outcome = Outcome.Draw;
                 }
             }
 
             switch (userMove)
             {
-                case 0: 
+                case Move.Rock: 
                     Console.Write("You choose rock");
                     break;
-                case 1: 
+                case Move.Paper: 
                     Console.Write("You choose paper");
                     break;
-                case 2: 
+                case Move.Scissor: 
                     Console.Write("You choose scissors");
                     break;
             }
@@ -110,28 +128,28 @@ public class Program
             
             switch (computerMove)
             {
-                case 0: 
+                case Move.Rock: 
                     Console.WriteLine(" and Computer choose rock");
                     break;
-                case 1: 
+                case Move.Paper: 
                     Console.WriteLine(" and Computer choose paper");
                     break;
-                case 2: 
+                case Move.Scissor: 
                     Console.WriteLine(" and Computer choose scissors");
                     break;
             }
             
-            switch (result)
+            switch (outcome)
             {
-                case 0: // draw
+                case Outcome.Draw: // draw
                     Console.WriteLine("This game was a draw.");
                     draws++;
                     break;
-                case 1: // computers wins
+                case Outcome.ComputerWin: // computers wins
                     Console.WriteLine("You lose.");
                     losses++;
                     break;
-                case -1: // user wins
+                case Outcome.UserWin: // user wins
                     Console.WriteLine("You win.");
                     wins++;
                     break;
